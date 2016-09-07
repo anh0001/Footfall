@@ -15,3 +15,14 @@ cd ~/openFrameworks/addons/ofxCvPiCam/
 mv libs old-libs
 ```
 -
+
+-
+###openFrameworks
+During installing if you encountered boost copy file error that means there is conflicting boost library between system and openFrameworks.
+To solve we need to remove the default outdated boost library in system.
+
+```
+sudo apt-get purge libboost1.54-dev
+sudo apt-get autoremove
+```
+-
