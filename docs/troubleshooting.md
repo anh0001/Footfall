@@ -25,4 +25,6 @@ To solve we need to remove the default outdated boost library in system.
 sudo apt-get purge libboost1.54-dev
 sudo apt-get autoremove
 ```
+
+For linux 32-bit, It is recommended to use gcc version >= 4.9. 
 -
