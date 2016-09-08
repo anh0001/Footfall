@@ -19,7 +19,12 @@ mv libs old-libs
 -
 ###openFrameworks
 During installing if you encountered boost copy file error that means there is conflicting boost library between system and openFrameworks.
-To solve we need to remove the default outdated boost library in system.
+```
+Description	Resource	Path	Location	Type
+undefined reference to `boost::filesystem::detail::copy_file(boost::filesystem::path const&, boost::filesystem::path const&, boost::filesystem::detail::copy_option, boost::system::error_code*)'	RPi2		line 502, external location: /usr/local/include/boost/filesystem/operations.hpp	C/C++ Problem
+```
+
+To solve this we need to remove the default outdated boost library in system.
 
 ```
 sudo apt-get purge libboost1.54-dev
