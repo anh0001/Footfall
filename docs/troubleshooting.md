@@ -14,7 +14,6 @@ You can resolve these issues by following [this guide] (https://github.com/orgic
 cd ~/openFrameworks/addons/ofxCvPiCam/
 mv libs old-libs
 ```
--
 
 -
 ###openFrameworks
@@ -45,4 +44,4 @@ Edit the config.make of the current project, then adds
 PROJECT_CFLAGS = -I$(PROJECT_ROOT)/addons/ofxOpenCv/libs/opencv/include/opencv
 ```
 This will force the compiler to always look for the openFrameworks's opencv header files.
-Surprisingly, once this fix is compiled and then removed after, the error is gone.
+Surprisingly, once this fix is compiled and then removed after, the error is fixed.
