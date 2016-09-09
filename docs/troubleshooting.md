@@ -33,7 +33,7 @@ For linux 32-bit, It is recommended to use gcc version >= 4.9.
 
 -
 ###ofxCv
-Encountered this error during linking, though we have an opencv installed.
+Encountered this error during linking, though we have an opencv installed in the system.
 ```
 undefined reference to cv::string(***)
 ```
