@@ -30,10 +30,7 @@ To solve this we need to remove the default outdated boost library in system.
 sudo apt-get purge libboost1.54-dev
 sudo apt-get autoremove
 ```
-
 For linux 32-bit, It is recommended to use gcc version >= 4.9. 
--
-
 
 -
 ###ofxCv
@@ -42,7 +39,6 @@ Encountered this error during linking, though we have an opencv installed.
 undefined reference to cv::string(***)
 ```
 We found that in Eclipse there is a conflicting opencv library between system and openframework.
-
 Edit the config.make of the current project, then adds
 
 ```
@@ -50,4 +46,3 @@ PROJECT_CFLAGS = -I$(PROJECT_ROOT)/addons/ofxOpenCv/libs/opencv/include/opencv
 ```
 This will force the compiler to always look for the openFrameworks's opencv header files.
 Surprisingly, once this fix is compiled and then removed after, the error is gone.
--
