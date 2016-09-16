@@ -45,3 +45,9 @@ PROJECT_CFLAGS = -I$(PROJECT_ROOT)/addons/ofxOpenCv/libs/opencv/include/opencv
 ```
 This will force the compiler to always look for the openFrameworks's opencv header files.
 Surprisingly, once this fix is compiled and then removed after, the error is fixed.
+
+
+-
+###Eclipse plugin for openFrameworks
+There is an error in the plugin script when we add an addons.
+To solve this, open Help-Installation details and find openFrameworks then performs update.
