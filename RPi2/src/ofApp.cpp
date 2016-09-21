@@ -77,7 +77,7 @@ void ofApp::setup()
     countOut = 0;
     countInLatch = false;
     countOutLatch = false;
-    
+
     loadConfig();
     makeMask();
     
@@ -87,7 +87,7 @@ void ofApp::setup()
     for (int i = 0; i < 30; i++) {
         counterLatches[i] = true;
     }
-    
+
     setupHttp();
     setupCV();
 }
@@ -101,7 +101,7 @@ void ofApp::setupCV()
     cam.setContrast(_contrast);
     cam.setBrightness(_brightness);
 #else 
-    videoPlayer.load("A Video File.mov");
+    videoPlayer.load("video.mp4");
     videoPlayer.play();
 #endif
     pMOG2 = new BackgroundSubtractorMOG2(_history,_MOGThreshold,false);
@@ -142,6 +142,7 @@ void ofApp::update()
 #ifdef USE_CAMERA
     frame = cam.grab();
 #else
+    videoPlayer.update();
     frame = toCv(videoPlayer);
 #endif
     
@@ -149,23 +150,24 @@ void ofApp::update()
     if(!frame.empty())
     {
         resize(frame, resizeF, cv::Size(frame.size().width, frame.size().height));
-        
+
         lightenMat = resizeF + cv::Scalar(_lightenAmount,_lightenAmount,_lightenAmount);
-        
-        lightenMat.copyTo(maskOutput,mask);
-        
+
+        //lightenMat.copyTo(maskOutput,mask);
+        lightenMat.copyTo(maskOutput);
+
         // Activate the background substraction
         pMOG2->operator()(maskOutput, fgMaskMOG2);
-        
+
         // Threshold the image
         threshold(fgMaskMOG2, output, _threshold);
-        
+
         // Blur
         blur(output, _blur);
-        
+
         // Dilate
         dilate(output);
-        
+
         // Pass through the Contour Finder
         if (ofGetFrameNum() > 200) {
             contourFinder.findContours(output);
@@ -226,7 +228,7 @@ void ofApp::update()
             counterLatches[i] = true;
         }
     }
-    
+
     if (followers.empty()) {
         // CounterLatches used to increment the counter
         for (int i = 0; i < 30; i++) {
@@ -262,20 +264,25 @@ void ofApp::draw()
     ofSetColor(255);
     // Draw contourFinder
     contourFinder.draw();
-    
+
     // Draw result of output
-    drawMat(output, 0, 0,320,240);
-    
+    drawMat(frame, 0, 0,480,320);
+    drawMat(maskOutput, 490, 0,480,320);
+    drawMat(fgMaskMOG2, 0, 330,480,320);
+    drawMat(output, 490, 330,480,320);
+
     // Draw tracker
     vector<Blob>& followers = tracker.getFollowers();
     for(int i = 0; i < followers.size(); i++)
     {
         followers[i].draw();
     }
-    
-    string displayString = "Coming In: " + ofToString(countIn) + " Going Out: " + ofToString(countOut) + " Overall Count: " + ofToString(count);
-    ofDrawBitmapStringHighlight(displayString,5,ofGetHeight()-15);
-    
+
+    //string displayString = "Coming In: " + ofToString(countIn) + " Going Out: " + ofToString(countOut) + " Overall Count: " + ofToString(count);
+    string displayString = "Up: " + ofToString(countIn) + " Down: " + ofToString(countOut) + " Count: " + ofToString(count);
+    //ofDrawBitmapStringHighlight(displayString,5,ofGetHeight()-15);
+    ofDrawBitmapStringHighlight(displayString,5,320-15);
+
     // Threshold Lines
     ofPushStyle();
     ofSetColor(0, 200, 10);
@@ -285,23 +292,23 @@ void ofApp::draw()
     ofSetColor(0, 200, 10);
     ofLine(startLine.x,startLine.y+20,endLine.x,endLine.y+20);
     ofPopStyle();
-    
+
     drawConfig();
-    
+
     for(int i = 0; i < lines.size(); i++) {
         ofSetColor(255,255,0,255-(i*25));
-        lines[i].draw(320/2,240/2+(i*10));
+        lines[i].draw(480/2,320/2+(i*10));
     }
-    
+
     int total = 0;
     int average = 0;
-    
+
     for (int i = 0 ; i < actions.size(); i++) {
         total += ofToInt(actions[i]);
     }
     if (!actions.empty()) {
         average = total/actions.size();
-        ofDrawBitmapStringHighlight(ofToString(average), 320,240/2);
+        ofDrawBitmapStringHighlight(ofToString(average), 460,320/2);
     }
 }
 //--------------------------------------------------------------

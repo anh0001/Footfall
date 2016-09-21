@@ -1,4 +1,4 @@
-// * Name: ofApp.h
+// * Name: ofApp.h9*
 // * Project: Footfall
 // * Author: David Haylock
 // * Creation Date: 20-11-2014
@@ -11,13 +11,13 @@
 #include <stdio.h>
 #include "ofxHttpUtils.h"
 #include "Blob.h"
-#include "ofxCvPiCam.h"
+//#include "ofxCvPiCam.h"
 #include "ofxXmlSettings.h"
 
 using namespace ofxCv;
 using namespace cv;
 
-#define USE_CAMERA
+//#define USE_CAMERA
 
 //--------------------------------------------------------------
 class myLine {
