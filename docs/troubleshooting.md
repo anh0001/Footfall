@@ -29,7 +29,13 @@ To solve this we need to remove the default outdated boost library in system.
 sudo apt-get purge libboost1.54-dev
 sudo apt-get autoremove
 ```
-For linux 32-bit, It is recommended to use gcc version >= 4.9. 
+For linux 32-bit, It is recommended to use gcc version >= 4.9.
+
+Error when playing video file.
+```
+[ error ] ofPixels: format doesn't support channels
+```
+Install gstreamer to solve this.
 
 -
 ###ofxCv
