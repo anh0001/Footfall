@@ -91,3 +91,26 @@ Launch the app like so.
 or
 * ```DISPLAY=:0 bin/projectName & disown```
 This puts the app in the background.
+
+
+##Troubleshooting
+
+###Locale unset
+```
+terminate called after throwing an instance of 'std::runtime_error'
+  what():  locale::facet::_S_create_c_locale name not valid
+Aborted
+```
+Solve this by setting locale, type 
+```
+sudo raspi-config
+select 5 Internationalisation Options
+select en_US.UTF-8 UTF-8
+select C.UTF-8
+and restart
+```
+or
+```
+sudo locale-gen en_US en_US.UTF-8
+sudo dpkg-reconfigure locales
+```

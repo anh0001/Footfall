@@ -45,7 +45,6 @@ undefined reference to cv::string(***)
 ```
 We found that in Eclipse there is a conflicting opencv library between system and openframework.
 Edit the config.make of the current project, then adds
-
 ```
 PROJECT_CFLAGS = -I$(PROJECT_ROOT)/addons/ofxOpenCv/libs/opencv/include/opencv
 ```
