@@ -56,3 +56,30 @@ Surprisingly, once this fix is compiled and then removed after, the error is fix
 ###Eclipse plugin for openFrameworks
 There is an error in the plugin script when we add an addons.
 To solve this, open Help-Installation details and find openFrameworks then performs update.
+
+###QtCreator
+Error:
+```
+libmpg123 not found
+```
+Install:
+```
+sudo apt-get install libmpg123-dev
+```
+
+Found an error of
+```
+error: unrecognized command line option ‘-std=gnu++14’
+```
+Install newer gcc and g++ compilers, in this case 4.9 for openframeworks compatibility.
+```
+sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+sudo apt-get update
+sudo apt-get install gcc-4.9 g++-4.9
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9
+```
+check gcc version
+```
+sudo update-alternatives --config gcc
+```
+Then compile again openframeworks
