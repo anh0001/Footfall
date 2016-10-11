@@ -3,6 +3,12 @@
 1. Install gcc and g++ version 4.9:
 ```
 sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+```
+or, with system proxy
+```
+sudo -E add-apt-repository ppa:ubuntu-toolchain-r/test
+```
+```
 sudo apt-get update
 sudo apt-get install gcc-4.9 g++-4.9
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9
@@ -11,9 +17,13 @@ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave 
 2. Install dependencies
 ```
 cd OF/scripts/linux/ubuntu
+```
+```
 sudo install_dependencies.sh
-or
-sudo -E install_dependencies.sh  # with proxy
+```
+or, with system proxy
+```
+sudo -E install_dependencies.sh
 ```
 
 3. Compile openframeworks
