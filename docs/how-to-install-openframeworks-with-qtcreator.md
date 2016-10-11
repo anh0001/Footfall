@@ -2,8 +2,7 @@
 
 ##Requirements:
 1. Openframeworks v0.9.3
-2. QtCreator v3.6.1 for 64-bit
-3. QtCreator v3.5.1 for 32-bit
+2. QtCreator v3.6.1 for 64-bit or QtCreator v3.5.1 for 32-bit
 
 ##Installation:
 - Install gcc and g++ version 4.9:
