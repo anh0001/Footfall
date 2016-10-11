@@ -6,7 +6,7 @@
 3. QtCreator v3.5.1 for 32-bit
 
 ##Installation:
-1. Install gcc and g++ version 4.9:
+- Install gcc and g++ version 4.9:
 ```
 sudo add-apt-repository ppa:ubuntu-toolchain-r/test
 ```
@@ -20,7 +20,7 @@ sudo apt-get install gcc-4.9 g++-4.9
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9
 ```
 
-2. Install dependencies
+- Install dependencies
 ```
 cd OF/scripts/linux/ubuntu
 ```
@@ -32,24 +32,24 @@ or, with system proxy
 sudo -E install_dependencies.sh
 ```
 
-3. Compile openframeworks
+- Compile openframeworks
 ```
 cd OF/scripts/linux
 ./compileOF.sh
 ```
 
-4. Install QtCreator
+- Install QtCreator
 ```
 ./qt-creator-xxx.run
 ```
 
-5. Connect QtCreator with Openframeworks
+- Connect QtCreator with Openframeworks
 ```
 cd OF/scripts/qtcreator
 ./install_template.sh
 ```
 
-6. Error libmpg123 not found
+- Error libmpg123 not found
 ```
 sudo apt-get install libmpg123-dev
 ```
