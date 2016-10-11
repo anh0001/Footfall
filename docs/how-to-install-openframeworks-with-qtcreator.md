@@ -1,5 +1,11 @@
 #How to Install Openframeworks with QtCreator:
 
+##Requirements:
+1. Openframeworks v0.9.3
+2. QtCreator v3.6.1 for 64-bit
+3. QtCreator v3.5.1 for 32-bit
+
+##Installation:
 1. Install gcc and g++ version 4.9:
 ```
 sudo add-apt-repository ppa:ubuntu-toolchain-r/test
@@ -34,7 +40,7 @@ cd OF/scripts/linux
 
 4. Install QtCreator
 ```
-./qt-creator-opensource-linux-x86_64-3.6.1.run
+./qt-creator-xxx.run
 ```
 
 5. Connect QtCreator with Openframeworks
