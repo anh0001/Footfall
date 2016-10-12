@@ -6,42 +6,49 @@ Requiresments:
 3. Ubuntu host
 
 ##ON THE RPI
-
+```
 cd
 curl -O http://192.237.185.151/versions/nightly/of_v20151008_linuxarmv6l_nightly.tar.gz
 mkdir openFrameworks
 tar vxfz of_v20151008_linuxarmv6l_nightly.tar.gz -C openFrameworks --strip-components 1
 cd /home/pi/openFrameworks/scripts/linux/debian
 sudo ./install_dependencies.sh
+```
 
 ##INSTALL SAMBA in RPI
 
 ##MOUNT PI ON UBUNTU
 
+```
 sudo mkdir /media/Data
 
 sudo nano /etc/fstab
 //IP-ADDRESS/Data /media/Data cifs credentials=/home/pi/.smbcredentials,iocharset=utf8 0 0
-
+```
 save and exit nano
 
 ##CREATE FILE TO STORE SMB USER/PASS
+```
 nano /home/pi/.smbcredentials
 
 add RPi samba user/pass (don't add this line)
 username=pi
 password=raspberry
-
+```
 save and exit nano
 
 ##MOUNT PI
+```
 sudo mount -a
+```
 
 TEST
+```
 ls -al /media/Data
+```
 
 ##COPY NECESSARY RPI CONTENTS FOR COMPILER
-
+```
 cd
 mkdir RPI_ROOT
 
@@ -51,10 +58,11 @@ ln -s /media/Data/lib/ lib
 ln -s /media/Data/opt/ opt
 
 cp -Rv /media/Data/usr/ usr
+```
 
 #FIX HARDCORDED LINKS TO /lib
 #TODO Script this: (old fixQualifiedPaths script doesn't work)
-
+```
 cd usr/lib/arm-linux-gnueabihf
 rm libudev.so libanl.so libBrokenLocale.so libcidn.so libcrypt.so libdbus-1.so libdl.so libexpat.so libglib-2.0.so liblzma.so libm.so libnsl.so libnss_compat.so libnss_dns.so libnss_files.so libnss_hesiod.so libnss_nisplus.so libnss_nis.so libpcre.so libpng12.so.0 libresolv.so libthread_db.so libusb-0.1.so.4 libusb-1.0.so libutil.so libz.so
 
@@ -86,19 +94,25 @@ ln -s ../../../lib/arm-linux-gnueabihf/libz.so.1.2.8  libz.so
 ln -s ../../../lib/arm-linux-gnueabihf/libudev.so.1.5.0 libudev.so
 
 cd
+```
 
 ##CREATE CROSS COMPILER
-
+```
 mkdir crosscompiler
 cd crosscompiler
 setup necessary variables for example proxy setting
 sudo chmod +x build_cross_gcc.sh
 sudo ./build_cross_gcc.sh
+```
 
 ##Compile OF
-./compile_of.sh
 setup necessary variables
+```
+./compile_of.sh
+```
 
 ##compile example
-./compile_of_example.sh
 setup necessary variables
+```
+./compile_of_example.sh
+```
