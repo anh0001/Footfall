@@ -58,7 +58,9 @@ There is an error in the plugin script when we add an addons.
 To solve this, open Help-Installation details and find openFrameworks then performs update.
 
 ###QtCreator
-Error:
+Qtcreator version 3.6.1 for 64-bit and 3.5.1 for 32-bit are used for compatilbility with openFrameworks v0.9.3.
+
+Error libmpg123
 ```
 libmpg123 not found
 ```
