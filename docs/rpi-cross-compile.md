@@ -116,3 +116,25 @@ setup necessary variables
 ```
 ./compile_of_example.sh
 ```
+
+##Troubleshooting
+Error libopencv_xxx.so
+```
+libopencv_xxx.so no such file or directory
+```
+
+Looking at the linker flags, the path is not correct which is set to /usr/lib/arm-linux-gnueabihf instead of RPI_ROOT/usr/lib/arm-linux-gnueabihf.
+To solve this edit $RPI_ROOT/usr/lib/arm-linux-gnueabihf/pkgconfig/opencv.pc. Edit prefix for example as follow:
+```
+prefix=/home/anhar/codes/RPI_ROOT/rootfs/usr
+exec_prefix=${prefix}
+libdir=${prefix}/lib/arm-linux-gnueabihf
+includedir_old=${prefix}/include/opencv
+includedir_new=${prefix}/include
+
+Name: OpenCV
+Description: Open Source Computer Vision Library
+Version: 2.4.9.1
+Libs: -L${libdir} ${exec_prefix}/lib/arm-linux-gnueabihf/libopencv_calib3d.so -lopencv_calib3d ${exec_prefix}/lib/arm-linux-gnueabihf/libopencv_contrib.so -lopencv_contrib ${exec_prefix}/lib/arm-linux-gnueabihf/libopencv_core.so -lopencv_core ${exec_prefix}/lib/arm-linux-gnueabihf/libopencv_features2d.so -lopencv_features2d ${exec_prefix}/lib/arm-linux-gnueabihf/libopencv_flann.so -lopencv_flann ${exec_prefix}/lib/arm-linux-gnueabihf/libopencv_gpu.so -lopencv_gpu ${exec_prefix}/lib/arm-linux-gnueabihf/libopencv_highgui.so -lopencv_highgui ${exec_prefix}/lib/arm-linux-gnueabihf/libopencv_imgproc.so -lopencv_imgproc ${exec_prefix}/lib/arm-linux-gnueabihf/libopencv_legacy.so -lopencv_legacy ${exec_prefix}/lib/arm-linux-gnueabihf/libopencv_ml.so -lopencv_ml ${exec_prefix}/lib/arm-linux-gnueabihf/libopencv_objdetect.so -lopencv_objdetect ${exec_prefix}/lib/arm-linux-gnueabihf/libopencv_ocl.so -lopencv_ocl ${exec_prefix}/lib/arm-linux-gnueabihf/libopencv_photo.so -lopencv_photo ${exec_prefix}/lib/arm-linux-gnueabihf/libopencv_stitching.so -lopencv_stitching ${exec_prefix}/lib/arm-linux-gnueabihf/libopencv_superres.so -lopencv_superres ${exec_prefix}/lib/arm-linux-gnueabihf/libopencv_ts.so -lopencv_ts ${exec_prefix}/lib/arm-linux-gnueabihf/libopencv_video.so -lopencv_video ${exec_prefix}/lib/arm-linux-gnueabihf/libopencv_videostab.so -lopencv_videostab
+Cflags: -I${includedir_old} -I${includedir_new}
+```
