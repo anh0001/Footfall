@@ -60,8 +60,8 @@ ln -s /media/Data/opt/ opt
 cp -Rv /media/Data/usr/ usr
 ```
 
-#FIX HARDCORDED LINKS TO /lib
-#TODO Script this: (old fixQualifiedPaths script doesn't work)
+##FIX HARDCORDED LINKS TO /lib
+###TODO Script this: (old fixQualifiedPaths script doesn't work)
 ```
 cd usr/lib/arm-linux-gnueabihf
 rm libudev.so libanl.so libBrokenLocale.so libcidn.so libcrypt.so libdbus-1.so libdl.so libexpat.so libglib-2.0.so liblzma.so libm.so libnsl.so libnss_compat.so libnss_dns.so libnss_files.so libnss_hesiod.so libnss_nisplus.so libnss_nis.so libpcre.so libpng12.so.0 libresolv.so libthread_db.so libusb-0.1.so.4 libusb-1.0.so libutil.so libz.so
