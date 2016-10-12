@@ -118,7 +118,7 @@ setup necessary variables
 ```
 
 ##Troubleshooting
-Error libopencv_xxx.so
+Error libopencv_xxx.so while compiling example using ofxOpencv
 ```
 libopencv_xxx.so no such file or directory
 ```
