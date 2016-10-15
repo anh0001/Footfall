@@ -114,3 +114,6 @@ or
 sudo locale-gen en_US en_US.UTF-8
 sudo dpkg-reconfigure locales
 ```
+
+### Run Raspberry Pi Openframeworks only in console mode without desktop.
+We got no display when running in desktop mode.
