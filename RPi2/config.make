@@ -37,7 +37,7 @@
 #
 #   Note: Leave a leading space when adding list items with the += operator
 ################################################################################
-# PROJECT_EXTERNAL_SOURCE_PATHS = 
+# PROJECT_EXTERNAL_SOURCE_PATHS =
 
 ################################################################################
 # PROJECT EXCLUSIONS
@@ -61,7 +61,7 @@
 #
 #   Note: Leave a leading space when adding list items with the += operator
 ################################################################################
-# PROJECT_EXCLUSIONS = 
+# PROJECT_EXCLUSIONS = /usr/lib/arm-linux-gnueabihf/libopencv%
 
 ################################################################################
 # PROJECT LINKER FLAGS
@@ -76,7 +76,7 @@
 # add a runtime path to search for those shared libraries, since they aren't 
 # incorporated directly into the final executable application binary.
 ################################################################################
-# PROJECT_LDFLAGS=-Wl,-rpath=./libs
+# PROJECT_LDFLAGS=-Wl,-rpath=./libs -L/home/anhar/codes/RPI_ROOT/of_v0.9.3_linuxarmv6l_release/addons/ofxOpenCv/libs/opencv/lib/emscripten
 
 ################################################################################
 # PROJECT DEFINES
@@ -104,7 +104,7 @@
 #
 #   Note: Leave a leading space when adding list items with the += operator
 ################################################################################
-# PROJECT_CFLAGS = -I$(PROJECT_ROOT)/addons/ofxOpenCv/libs/opencv/include/opencv
+# PROJECT_CFLAGS = -I$(OF_ROOT)/addons/ofxOpenCv/libs/opencv/include/opencv
 
 ################################################################################
 # PROJECT OPTIMIZATION CFLAGS

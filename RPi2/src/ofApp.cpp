@@ -266,10 +266,10 @@ void ofApp::draw()
     contourFinder.draw();
 
     // Draw result of output
-    drawMat(frame, 0, 0,480,320);
-    drawMat(maskOutput, 490, 0,480,320);
-    drawMat(fgMaskMOG2, 0, 330,480,320);
-    drawMat(output, 490, 330,480,320);
+    drawMat(frame, 0, 0,320,240);
+    //drawMat(maskOutput, 490, 0,480,320);
+    //drawMat(fgMaskMOG2, 0, 330,480,320);
+    //drawMat(output, 490, 330,480,320);
 
     // Draw tracker
     vector<Blob>& followers = tracker.getFollowers();
@@ -280,8 +280,8 @@ void ofApp::draw()
 
     //string displayString = "Coming In: " + ofToString(countIn) + " Going Out: " + ofToString(countOut) + " Overall Count: " + ofToString(count);
     string displayString = "Up: " + ofToString(countIn) + " Down: " + ofToString(countOut) + " Count: " + ofToString(count);
-    //ofDrawBitmapStringHighlight(displayString,5,ofGetHeight()-15);
-    ofDrawBitmapStringHighlight(displayString,5,320-15);
+    ofDrawBitmapStringHighlight(displayString,5,ofGetHeight()-15);
+    //ofDrawBitmapStringHighlight(displayString,5,320-15);
 
     // Threshold Lines
     ofPushStyle();
@@ -297,7 +297,8 @@ void ofApp::draw()
 
     for(int i = 0; i < lines.size(); i++) {
         ofSetColor(255,255,0,255-(i*25));
-        lines[i].draw(480/2,320/2+(i*10));
+        //lines[i].draw(480/2,320/2+(i*10));
+        lines[i].draw(320/2,240/2+(i*10));
     }
 
     int total = 0;
@@ -308,7 +309,8 @@ void ofApp::draw()
     }
     if (!actions.empty()) {
         average = total/actions.size();
-        ofDrawBitmapStringHighlight(ofToString(average), 460,320/2);
+        //ofDrawBitmapStringHighlight(ofToString(average), 460,320/2);
+        ofDrawBitmapStringHighlight(ofToString(average), 320,240/2);
     }
 }
 //--------------------------------------------------------------
