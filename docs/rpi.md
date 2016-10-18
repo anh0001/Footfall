@@ -117,3 +117,29 @@ sudo dpkg-reconfigure locales
 
 ### Run Raspberry Pi Openframeworks only in console mode without desktop.
 We got no display when running in desktop mode.
+
+### Remote desktop sharing
+Due to Openframeworks uses opengl window, common vnc server could not work.
+To resolve this, use the git dispmanx_vnc.
+Follow [this instruction](http://raspmer.blogspot.co.id/2015/07/vnc-server-for-raspberry-pi-with.html).
+Check your gcc and g++ with (at least version 4.7)
+```sh
+$ gcc -v
+$ g++ -v
+```
+Then extract to a folder and,
+```sh
+make
+```
+
+Copy this file to execute path. example /bin and /usr/local/bin.
+
+If you want to use X, modprobe  evdev first.
+```sh
+$ sudo modprobe evdev
+```
+
+Start with
+```sh
+$ sudo dispmanx_vncserver
+```
