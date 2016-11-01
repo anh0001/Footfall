@@ -1,9 +1,9 @@
 #Raspberry pi openframeworks cross-compiling
 
 Requiresments:
-1. openframeworks arm6 v0.9.3
-2. Raspberry pi 3
-3. Ubuntu host
+- openframeworks arm6 v0.9.3
+- Raspberry pi 3
+- Ubuntu host
 
 ##ON THE RPI
 ```
@@ -16,22 +16,45 @@ sudo ./install_dependencies.sh
 ```
 
 ##INSTALL SAMBA in RPI
+```
+sudo apt-get install samba samba-common-bin
+```
+Edit /etc/samba/smb.conf and add this:
+```
+[data]
+   comment= Pi Data
+   path=/
+   browseable=Yes
+   writeable=Yes
+   only guest=no
+   create mask=0777
+   directory mask=0777
+   public=no
+```
+Add samba user
+```
+sudo smbpasswd -a pi
+```
+Restart samba
+```
+sudo service smbd restart
+```
 
 ##MOUNT PI ON UBUNTU
 
 ```
-sudo mkdir /media/Data
+sudo mkdir /media/data
 
 sudo nano /etc/fstab
-//IP-ADDRESS/Data /media/Data cifs credentials=/home/pi/.smbcredentials,iocharset=utf8 0 0
+//IP-ADDRESS/data /media/data cifs credentials=/home/ubuntu_user/.smbcredentials,iocharset=utf8 0 0
 ```
 save and exit nano
 
 ##CREATE FILE TO STORE SMB USER/PASS
 ```
-nano /home/pi/.smbcredentials
+nano /home/ubuntu_user/.smbcredentials
 
-add RPi samba user/pass (don't add this line)
+# add RPi samba user/pass (don't add this line)
 username=pi
 password=raspberry
 ```
@@ -42,9 +65,9 @@ save and exit nano
 sudo mount -a
 ```
 
-TEST
+Test
 ```
-ls -al /media/Data
+ls -al /media/data
 ```
 
 ##COPY NECESSARY RPI CONTENTS FOR COMPILER
