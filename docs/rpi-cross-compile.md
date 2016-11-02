@@ -79,7 +79,13 @@ cd RPI_ROOT
 ln -s /media/Data/etc/ etc
 ln -s /media/Data/lib/ lib
 ln -s /media/Data/opt/ opt
-
+```
+Sync the /usr folder with,
+```
+rsync -rl --delete-after --safe-links pi@192.168.1.PI:/{lib,usr} $HOME/raspberrypi/rootfs
+```
+Or
+```
 cp -Rv /media/Data/usr/ usr
 ```
 
