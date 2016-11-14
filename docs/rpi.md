@@ -143,3 +143,17 @@ Start with
 ```sh
 $ sudo dispmanx_vncserver
 ```
+
+### Install watchdog
+Follow this [link](https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=147501).
+Basically there are two versions: 1. Using package watchdog and 2. Using preinstalled watchdog on Jessie.
+The second option is very simple just edit
+```
+sudo nano /etc/systemd/system.conf
+```
+And set these:
+```
+RuntimeWatchdogSec=15
+ShutdownWatchdogSec=10min
+```
+Reboot
