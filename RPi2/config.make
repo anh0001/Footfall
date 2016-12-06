@@ -76,7 +76,8 @@
 # add a runtime path to search for those shared libraries, since they aren't 
 # incorporated directly into the final executable application binary.
 ################################################################################
-# PROJECT_LDFLAGS=-Wl,-rpath=./libs
+PROJECT_LDFLAGS = -Wl,-rpath=./libs
+PROJECT_LDFLAGS += -L/opt/ros/indigo/lib -lroscpp -limage_transport -lcv_bridge -lroslib -lusb_cam
 
 ################################################################################
 # PROJECT DEFINES
@@ -105,6 +106,7 @@
 #   Note: Leave a leading space when adding list items with the += operator
 ################################################################################
 # PROJECT_CFLAGS = -I$(PROJECT_ROOT)/addons/ofxOpenCv/libs/opencv/include/opencv
+PROJECT_CFLAGS = -I/opt/ros/indigo/include/
 
 ################################################################################
 # PROJECT OPTIMIZATION CFLAGS

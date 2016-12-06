@@ -67,6 +67,7 @@ void ofApp::makeMask()
     
     fillConvexPoly(mask,&polyright[0],polyright.size(),255,8,0);
 }
+
 //--------------------------------------------------------------
 void ofApp::setup()
 {
@@ -95,7 +96,9 @@ void ofApp::setup()
 void ofApp::setupCV()
 {
     
-#ifdef USE_CAMERA
+#ifdef USE_ROS_CAMERA
+    //TODO: Some extra initializationof RosCamera
+#elif USE_CAMERA
     cam.setup(_cameraWidth, _cameraHeight, false);
     cam.setFlips(false, true);
     cam.setContrast(_contrast);
@@ -139,7 +142,13 @@ void ofApp::update()
         actions.pop_back();
     }
     
-#ifdef USE_CAMERA
+#ifdef USE_ROS_CAMERA
+    if ( (ros_cam.cv_ptr != NULL) && (!ros_cam.cv_ptr->image.empty()) )
+    {
+        frame = ros_cam.cv_ptr->image;
+        cout << "get frame" << endl;
+    }
+#elif USE_CAMERA
     frame = cam.grab();
 #else
     videoPlayer.update();
@@ -147,94 +156,96 @@ void ofApp::update()
 #endif
     
     
-    if(!frame.empty())
-    {
-        resize(frame, resizeF, cv::Size(frame.size().width, frame.size().height));
+//    if(!frame.empty())
+//    {
+//        resize(frame, resizeF, cv::Size(frame.size().width, frame.size().height));
 
-        lightenMat = resizeF + cv::Scalar(_lightenAmount,_lightenAmount,_lightenAmount);
+//        lightenMat = resizeF + cv::Scalar(_lightenAmount,_lightenAmount,_lightenAmount);
 
-        //lightenMat.copyTo(maskOutput,mask);
-        lightenMat.copyTo(maskOutput);
+//        //lightenMat.copyTo(maskOutput,mask);
+//        lightenMat.copyTo(maskOutput);
 
-        // Activate the background substraction
-        pMOG2->operator()(maskOutput, fgMaskMOG2);
+//        // Activate the background substraction
+//        pMOG2->operator()(maskOutput, fgMaskMOG2);
 
-        // Threshold the image
-        threshold(fgMaskMOG2, output, _threshold);
+//        // Threshold the image
+//        threshold(fgMaskMOG2, output, _threshold);
 
-        // Blur
-        blur(output, _blur);
+//        // Blur
+//        blur(output, _blur);
 
-        // Dilate
-        dilate(output);
+//        // Dilate
+//        dilate(output);
 
-        // Pass through the Contour Finder
-        if (ofGetFrameNum() > 200) {
-            contourFinder.findContours(output);
-            // Do tracking
-            tracker.track(contourFinder.getBoundingRects());
-        }
-    }
+//        // Pass through the Contour Finder
+//        if (ofGetFrameNum() > 200) {
+//            contourFinder.findContours(output);
+//            // Do tracking
+//            tracker.track(contourFinder.getBoundingRects());
+//        }
+//    }
     
-    myLine l;
-    vector<Blob>& followers = tracker.getFollowers();
-    for(int i = 0; i < followers.size(); i++) {
-        followers[i].setLinePosition(startLine, endLine);
-        followers[i].setSizes(_minBlobSize,_midBlobSize,_maxBlobSize);
-        // If the tracker returns true in open latch increment, then close latch. Then kill the tracker element.
-        if (followers[i].bIn) {
-            if (counterLatches[i]) {
-                countIn += followers[i].howManyIn();
-                count += followers[i].howManyIn();
-                string httpString = ofToString(followers[i].howManyIn());
-                actions.push_front(ofToString(followers[i].howWide()));
-                l.width = followers[i].howWide();
-                lines.push_front(l);
-                ofxHttpForm formIn;
-                formIn.action = _uploadurl;
-                formIn.method = OFX_HTTP_POST;
-                formIn.addFormField("secret", _secretKey);
-                formIn.addFormField("location", _locationID);
-                formIn.addFormField("count", httpString);
-                formIn.addFormField("rawtimestamp", ofGetTimestampString("%Y-%m-%d %H:%M:%s"));
-                formIn.addFormField("submit","1");
-                httpUtils.addForm(formIn);
-                counterLatches[i] = false;
-            }
-            followers[i].kill();
-            counterLatches[i] = true;
-        }
-        // If the tracker returns true out open latch increment, then close latch. Then kill the tracker element.
-        if (followers[i].bOut) {
-            if (counterLatches[i]) {
-                countOut += followers[i].howManyOut();
-                count -= followers[i].howManyOut();
-                string httpString ="-"+ofToString(followers[i].howManyOut());
-                actions.push_front(ofToString(followers[i].howWide()));
-                l.width = followers[i].howWide();
-                lines.push_front(l);
-                ofxHttpForm formOut;
-                formOut.action = _uploadurl;
-                formOut.method = OFX_HTTP_POST;
-                formOut.addFormField("secret", _secretKey);
-                formOut.addFormField("location", _locationID);
-                formOut.addFormField("count", httpString);
-                formOut.addFormField("rawtimestamp", ofGetTimestampString("%Y-%m-%d %H:%M:%s"));
-                formOut.addFormField("submit","1");
-                httpUtils.addForm(formOut);
-                counterLatches[i] = false;
-            }
-            followers[i].kill();
-            counterLatches[i] = true;
-        }
-    }
+//    myLine l;
+//    vector<Blob>& followers = tracker.getFollowers();
+//    for(int i = 0; i < followers.size(); i++) {
+//        followers[i].setLinePosition(startLine, endLine);
+//        followers[i].setSizes(_minBlobSize,_midBlobSize,_maxBlobSize);
+//        // If the tracker returns true in open latch increment, then close latch. Then kill the tracker element.
+//        if (followers[i].bIn) {
+//            if (counterLatches[i]) {
+//                countIn += followers[i].howManyIn();
+//                count += followers[i].howManyIn();
+//                string httpString = ofToString(followers[i].howManyIn());
+//                actions.push_front(ofToString(followers[i].howWide()));
+//                l.width = followers[i].howWide();
+//                lines.push_front(l);
+//                ofxHttpForm formIn;
+//                formIn.action = _uploadurl;
+//                formIn.method = OFX_HTTP_POST;
+//                formIn.addFormField("secret", _secretKey);
+//                formIn.addFormField("location", _locationID);
+//                formIn.addFormField("count", httpString);
+//                formIn.addFormField("rawtimestamp", ofGetTimestampString("%Y-%m-%d %H:%M:%s"));
+//                formIn.addFormField("submit","1");
+//                httpUtils.addForm(formIn);
+//                counterLatches[i] = false;
+//            }
+//            followers[i].kill();
+//            counterLatches[i] = true;
+//        }
+//        // If the tracker returns true out open latch increment, then close latch. Then kill the tracker element.
+//        if (followers[i].bOut) {
+//            if (counterLatches[i]) {
+//                countOut += followers[i].howManyOut();
+//                count -= followers[i].howManyOut();
+//                string httpString ="-"+ofToString(followers[i].howManyOut());
+//                actions.push_front(ofToString(followers[i].howWide()));
+//                l.width = followers[i].howWide();
+//                lines.push_front(l);
+//                ofxHttpForm formOut;
+//                formOut.action = _uploadurl;
+//                formOut.method = OFX_HTTP_POST;
+//                formOut.addFormField("secret", _secretKey);
+//                formOut.addFormField("location", _locationID);
+//                formOut.addFormField("count", httpString);
+//                formOut.addFormField("rawtimestamp", ofGetTimestampString("%Y-%m-%d %H:%M:%s"));
+//                formOut.addFormField("submit","1");
+//                httpUtils.addForm(formOut);
+//                counterLatches[i] = false;
+//            }
+//            followers[i].kill();
+//            counterLatches[i] = true;
+//        }
+//    }
 
-    if (followers.empty()) {
-        // CounterLatches used to increment the counter
-        for (int i = 0; i < 30; i++) {
-            counterLatches[i] = true;
-        }
-    }
+//    if (followers.empty()) {
+//        // CounterLatches used to increment the counter
+//        for (int i = 0; i < 30; i++) {
+//            counterLatches[i] = true;
+//        }
+//    }
+
+    ros::spin();
 }
 //--------------------------------------------------------------
 void ofApp::drawConfig()
@@ -260,56 +271,64 @@ void ofApp::drawConfig()
 //--------------------------------------------------------------
 void ofApp::draw()
 {
+    static int cnt=0;
+
     // No affect on the tracker mainly for viz
     ofSetColor(255);
     // Draw contourFinder
-    contourFinder.draw();
+    //contourFinder.draw();
+
+    cout << "Draw..." << endl;
+    ofDrawBitmapStringHighlight("CNT="+ofToString(cnt), 460,320/2);
 
     // Draw result of output
-    drawMat(frame, 0, 0,480,320);
-    drawMat(maskOutput, 490, 0,480,320);
-    drawMat(fgMaskMOG2, 0, 330,480,320);
-    drawMat(output, 490, 330,480,320);
-
-    // Draw tracker
-    vector<Blob>& followers = tracker.getFollowers();
-    for(int i = 0; i < followers.size(); i++)
+    if(!frame.empty())
     {
-        followers[i].draw();
+        drawMat(frame, 0, 0,480,320);
+//    drawMat(maskOutput, 490, 0,480,320);
+//    drawMat(fgMaskMOG2, 0, 330,480,320);
+//    drawMat(output, 490, 330,480,320);
     }
 
-    //string displayString = "Coming In: " + ofToString(countIn) + " Going Out: " + ofToString(countOut) + " Overall Count: " + ofToString(count);
-    string displayString = "Up: " + ofToString(countIn) + " Down: " + ofToString(countOut) + " Count: " + ofToString(count);
-    //ofDrawBitmapStringHighlight(displayString,5,ofGetHeight()-15);
-    ofDrawBitmapStringHighlight(displayString,5,320-15);
+//    // Draw tracker
+//    vector<Blob>& followers = tracker.getFollowers();
+//    for(int i = 0; i < followers.size(); i++)
+//    {
+//        followers[i].draw();
+//    }
 
-    // Threshold Lines
-    ofPushStyle();
-    ofSetColor(0, 200, 10);
-    ofLine(startLine.x,startLine.y-20,endLine.x,endLine.y-20);
-    ofSetColor(200, 0, 10);
-    ofLine(startLine,endLine);
-    ofSetColor(0, 200, 10);
-    ofLine(startLine.x,startLine.y+20,endLine.x,endLine.y+20);
-    ofPopStyle();
+//    //string displayString = "Coming In: " + ofToString(countIn) + " Going Out: " + ofToString(countOut) + " Overall Count: " + ofToString(count);
+//    string displayString = "Up: " + ofToString(countIn) + " Down: " + ofToString(countOut) + " Count: " + ofToString(count);
+//    //ofDrawBitmapStringHighlight(displayString,5,ofGetHeight()-15);
+//    ofDrawBitmapStringHighlight(displayString,5,320-15);
 
-    drawConfig();
+//    // Threshold Lines
+//    ofPushStyle();
+//    ofSetColor(0, 200, 10);
+//    ofLine(startLine.x,startLine.y-20,endLine.x,endLine.y-20);
+//    ofSetColor(200, 0, 10);
+//    ofLine(startLine,endLine);
+//    ofSetColor(0, 200, 10);
+//    ofLine(startLine.x,startLine.y+20,endLine.x,endLine.y+20);
+//    ofPopStyle();
 
-    for(int i = 0; i < lines.size(); i++) {
-        ofSetColor(255,255,0,255-(i*25));
-        lines[i].draw(480/2,320/2+(i*10));
-    }
+//    drawConfig();
 
-    int total = 0;
-    int average = 0;
+//    for(int i = 0; i < lines.size(); i++) {
+//        ofSetColor(255,255,0,255-(i*25));
+//        lines[i].draw(480/2,320/2+(i*10));
+//    }
 
-    for (int i = 0 ; i < actions.size(); i++) {
-        total += ofToInt(actions[i]);
-    }
-    if (!actions.empty()) {
-        average = total/actions.size();
-        ofDrawBitmapStringHighlight(ofToString(average), 460,320/2);
-    }
+//    int total = 0;
+//    int average = 0;
+
+//    for (int i = 0 ; i < actions.size(); i++) {
+//        total += ofToInt(actions[i]);
+//    }
+//    if (!actions.empty()) {
+//        average = total/actions.size();
+//        ofDrawBitmapStringHighlight(ofToString(average), 460,320/2);
+//    }
 }
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {   }

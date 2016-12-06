@@ -14,10 +14,16 @@
 //#include "ofxCvPiCam.h"
 #include "ofxXmlSettings.h"
 
+#include "ros/ros.h"
+#include "image_transport/image_transport.h"
+#include "cv_bridge/cv_bridge.h"
+#include "sensor_msgs/image_encodings.h"
+
 using namespace ofxCv;
 using namespace cv;
 
 //#define USE_CAMERA
+#define USE_ROS_CAMERA
 
 //--------------------------------------------------------------
 class myLine {
@@ -28,6 +34,29 @@ public:
         ofLine(x,y,x-width/2,y);
         ofLine(x,y,x+width/2,y);
     }
+};
+
+//--------------------------------------------------------------
+class RosCamera
+{
+    ros::NodeHandle nh_;
+    image_transport::ImageTransport it_;
+    image_transport::Subscriber image_sub_;
+
+    public:
+    cv_bridge::CvImagePtr cv_ptr;
+
+    RosCamera() : it_(nh_)
+    {
+        cv_ptr = NULL;
+        image_sub_ = it_.subscribe("/usb_cam/image_raw", 1, &RosCamera::imageCopy, this);
+    }
+
+    void imageCopy(const sensor_msgs::ImageConstPtr& msg)
+    {
+        cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
+    }
+
 };
 
 //--------------------------------------------------------------
@@ -44,12 +73,16 @@ public:
     void drawConfig();
     void makeMask();
     void newResponse(ofxHttpResponse & response);
-    
-#ifdef USE_CAMERA
+    void imageCopy(const sensor_msgs::ImageConstPtr& msg);
+
+#ifdef USE_ROS_CAMERA
+    RosCamera ros_cam;
+#elif USE_CAMERA
     ofxCvPiCam cam;
 #else
     ofVideoPlayer videoPlayer;
 #endif
+
     ofxCv::ContourFinder contourFinder;
     ofxCv::RectTrackerFollower<Blob> tracker;
     cv::BackgroundSubtractorMOG2* pMOG2;
@@ -99,5 +132,3 @@ public:
     ofPoint startLine;
     ofPoint endLine;
 };
-
-
