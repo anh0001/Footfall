@@ -97,14 +97,14 @@ void ofApp::setupCV()
     
 #ifdef USE_CAMERA
     cam.setup(_cameraWidth, _cameraHeight, false);
-    cam.setFlips(false, true);
+    cam.setFlips(false, false);
     cam.setContrast(_contrast);
     cam.setBrightness(_brightness);
 #else 
     videoPlayer.load("video.mp4");
     videoPlayer.play();
 #endif
-    pMOG2 = new BackgroundSubtractorMOG2(_history,_MOGThreshold,false);
+    pMOG2 = new BackgroundSubtractorMOG2(_history,_MOGThreshold,true);
     
     contourFinder.setMinAreaRadius(_minArea);
     contourFinder.setMaxAreaRadius(_maxArea);
@@ -153,8 +153,8 @@ void ofApp::update()
 
         lightenMat = resizeF + cv::Scalar(_lightenAmount,_lightenAmount,_lightenAmount);
 
-        //lightenMat.copyTo(maskOutput,mask);
-        lightenMat.copyTo(maskOutput);
+        lightenMat.copyTo(maskOutput,mask);
+        //lightenMat.copyTo(maskOutput);
 
         // Activate the background substraction
         pMOG2->operator()(maskOutput, fgMaskMOG2);
@@ -190,15 +190,15 @@ void ofApp::update()
                 actions.push_front(ofToString(followers[i].howWide()));
                 l.width = followers[i].howWide();
                 lines.push_front(l);
-                ofxHttpForm formIn;
-                formIn.action = _uploadurl;
-                formIn.method = OFX_HTTP_POST;
-                formIn.addFormField("secret", _secretKey);
-                formIn.addFormField("location", _locationID);
-                formIn.addFormField("count", httpString);
-                formIn.addFormField("rawtimestamp", ofGetTimestampString("%Y-%m-%d %H:%M:%s"));
-                formIn.addFormField("submit","1");
-                httpUtils.addForm(formIn);
+//                ofxHttpForm formIn;
+//                formIn.action = _uploadurl;
+//                formIn.method = OFX_HTTP_POST;
+//                formIn.addFormField("secret", _secretKey);
+//                formIn.addFormField("location", _locationID);
+//                formIn.addFormField("count", httpString);
+//                formIn.addFormField("rawtimestamp", ofGetTimestampString("%Y-%m-%d %H:%M:%s"));
+//                formIn.addFormField("submit","1");
+//                httpUtils.addForm(formIn);
                 counterLatches[i] = false;
             }
             followers[i].kill();
@@ -213,15 +213,15 @@ void ofApp::update()
                 actions.push_front(ofToString(followers[i].howWide()));
                 l.width = followers[i].howWide();
                 lines.push_front(l);
-                ofxHttpForm formOut;
-                formOut.action = _uploadurl;
-                formOut.method = OFX_HTTP_POST;
-                formOut.addFormField("secret", _secretKey);
-                formOut.addFormField("location", _locationID);
-                formOut.addFormField("count", httpString);
-                formOut.addFormField("rawtimestamp", ofGetTimestampString("%Y-%m-%d %H:%M:%s"));
-                formOut.addFormField("submit","1");
-                httpUtils.addForm(formOut);
+//                ofxHttpForm formOut;
+//                formOut.action = _uploadurl;
+//                formOut.method = OFX_HTTP_POST;
+//                formOut.addFormField("secret", _secretKey);
+//                formOut.addFormField("location", _locationID);
+//                formOut.addFormField("count", httpString);
+//                formOut.addFormField("rawtimestamp", ofGetTimestampString("%Y-%m-%d %H:%M:%s"));
+//                formOut.addFormField("submit","1");
+//                httpUtils.addForm(formOut);
                 counterLatches[i] = false;
             }
             followers[i].kill();
@@ -267,9 +267,9 @@ void ofApp::draw()
 
     // Draw result of output
     drawMat(frame, 0, 0,320,240);
-    //drawMat(maskOutput, 490, 0,480,320);
-    //drawMat(fgMaskMOG2, 0, 330,480,320);
-    //drawMat(output, 490, 330,480,320);
+    drawMat(maskOutput, 330, 0,320,240);
+    drawMat(fgMaskMOG2, 0, 250,320,240);
+    drawMat(output, 330, 250,320,240);
 
     // Draw tracker
     vector<Blob>& followers = tracker.getFollowers();
